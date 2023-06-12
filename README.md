@@ -10,6 +10,14 @@ If it doesn't appear that way, then either I didn't set it up correctly,
 or something went wrong - presumably from my end - in setting it up.
 Either way, you are free to copy, modify, and share your versions, so long
 as it's useful.
+
+EVERYTHING PROVIDED HERE IS GIVEN IN AN AS-IS NATURE. I SHOULD NOT BE HELD
+LIABLE FOR ANY DAMAGES RECEIVED BY YOU DUE TO SELF-INFLICTED HARMFUL
+PROGRAMMING. BY USING THIS YOU ACCEPT THAT ANY MODIFICATIONS TO YOUR SYSTEM
+WERE DONE BY YOUR OWN ACTIONS, AND THAT WHEN YOU RECEIVED THIS CODE, IT WAS
+NEVER MEANT TO MODIFY YOUR FILESYSTEM - EXCEPT IN THE CONTAINING FOLDER,
+YOUR PHYSICAL DEVICES, YOUR LOCAL NETWORK'S STABILITY, OR ANY OTHER MISCELLA-
+NEOUS PROPERTY BELONGING TO YOU.
 ### It should be able to make a certificate for your local machines*
 
 ### Following components are required:
