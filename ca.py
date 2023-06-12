@@ -37,18 +37,24 @@ class CACertGenerator:
             ["write_priv_key", actions.keys.write_priv_key, "pvkey"],
             ["write_pub_key", actions.keys.write_pub_key, "pbkey"],
             ["write_cert", actions.certs.write_cert, "cert"],
-            ["gen_cert", actions.certs.gen_cert, "cert"],
-            ["sign_cert", actions.certs.sign_cert, "csr"],
-            ["acknowledge", actions.requestor.acknowledge, "ack"]
+            ["gen_cert", actions.certs.gen_cert, "cert", "bye"],
+            ["sign_cert", actions.certs.sign_cert, "csr", "bye"],
+            ["acknowledge", actions.requestor.acknowledge, "ack", "bye"],
+            ["goodbye", actions.requestor.goodbye, "bye", None]
         ]
         for action in actions_list:
-            await self.build_action({"act_name": action[0], "act_func": action[1], "act_alias": action[2]})
+            await self.build_action({
+                "act_name": action[0],
+                "act_func": action[1], "act_alias": action[2],
+                "act_next": action[3]
+            })
         
         await self.actions["gen_cert"](self.cert_data)
     
     async def live(self, sv_data):
         """Server initialization function."""
         await self.setup()
+        print(self.actions)
 
         self.server = socket.socket()
         self.server.bind(sv_data)
@@ -63,7 +69,8 @@ class CACertGenerator:
     async def answer(self, req_data):
         """Server response function."""
         if(req_data["request"] in self.answers):
-            await self.actions[self.answers[req_data["request"]]](req_data)
+            action_ref = self.answers[req_data["request"]]
+            await self.actions[action_ref](req_data, self.actions[action_ref]["next"])
 
 
 LOCAL_CA = CACertGenerator({

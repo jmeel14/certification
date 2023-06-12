@@ -85,5 +85,5 @@ async def gen_cert(cert_data):
         ))
     return cert_data
 
-async def sign_csr(csr_data):
+async def sign_cert(csr_data):
     print(csr_data)

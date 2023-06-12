@@ -16,4 +16,8 @@ async def acknowledge(req, processor_func):
     print("Server received a connection!")
     req.send(json.dumps({"message": "ack"}).encode())
     await processor_func(req)
+
+async def goodbye(req):
+    print("Server received a goodbye!")
+    req.send(json.dumps({"message": "bye"}).encode())
     req.close()
