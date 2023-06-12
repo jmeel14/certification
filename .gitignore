@@ -1,0 +1,5 @@
+*_priv.key
+*_pub.key
+*_cert.crt
+./_pycache
+./actions/__pycache__
