@@ -1,5 +1,5 @@
 # A simple certificate authority server
-This project should be assumed to be using a Creative Commons License.
+This project should be assumed to be using a Creative Commons CC0 License.
 If it doesn't appear that way, then either I didn't set it up correctly,
 or something went wrong - presumably from my end - in setting it up.
 Either way, you are free to copy, modify, and share your versions, so long
