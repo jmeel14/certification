@@ -2,8 +2,8 @@
 
 This is a program that runs a server to authorize certificate signing requests
 for all your webserver needs. Hopefully, you won't have to rely on external
-parties for all your information or filesharing needs within your own home.
-Think of it like a home assistant portal device.
+parties for all your information or filesharing needs under encryption within
+your own home.
 
 This project should be assumed to be using a Creative Commons CC0 License.
 If it doesn't appear that way, then either I didn't set it up correctly,
