@@ -2,6 +2,29 @@ from cryptography.hazmat.primitives import serialization, hashes
 from os import path
 from asyncio import iscoroutinefunction
 
+async def assert_func_call(func, data):
+    """Assert a function  call, and handle it whether coroutine or not.
+
+    This function assumes that a function is given, and will attempt to
+    call it using given data, and if it is a coroutine, it will await it.
+
+    Args:
+        func (function): The function to call.
+        data (any): The data to pass to the function.
+    
+    Returns:
+        any: The result of the function call.
+    
+    Raises:
+        AssertionError: If the function is not a function.
+    """
+    if(not callable(func)):
+        raise AssertionError("Cannot call a non-function!")
+    if(iscoroutinefunction(func)):
+        return await func(data)
+    else:
+        return func(data)
+
 async def assert_referable(referable, ref_key, cause):
     """Assert a referable key, and generate it if it doesn't exist.
     
@@ -35,9 +58,5 @@ async def assert_referable(referable, ref_key, cause):
                 raise AssertionError(
                     "".join(assert_err_str)
                 )
-    if(cause["function"]):
-        if(iscoroutinefunction(cause["function"])):
-            referable[ref_key] = await cause["function"](cause["data"])
-        else:
-            referable[ref_key] = cause["function"](cause["data"])
+    referable[ref_key] = await assert_func_call(cause["function"], cause["data"])
     return referable
