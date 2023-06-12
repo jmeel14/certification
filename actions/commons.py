@@ -19,7 +19,7 @@ async def assert_func_call(func, data):
         AssertionError: If the function is not a function.
     """
     if(not callable(func)):
-        raise AssertionError("Cannot call a non-function!")
+        raise AssertionError("Attempt was made to call a non-function.")
     if(iscoroutinefunction(func)):
         return await func(data)
     else:
