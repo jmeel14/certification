@@ -22,24 +22,27 @@ class CACertGenerator:
             Args:
                 action_data (dict): The data to pass to the function. Expected keys:
                     act_name (str): The name of the action.
-                    act_key (str): The key to check.
                     act_func (function): The function to call to generate the key.
+                    act_alias (str): The alias to be received by requests.
         """
         action_dict = await actions.commons.assert_referable(action_data, "act_name", {
             "function": None, "data": None
         })
         self.actions[action_dict["act_name"]] = action_dict["act_func"]
+        self.answers[action_dict["act_alias"]] = action_dict["act_name"]
     
     async def setup(self):
         """Server setup function."""
         actions_list = [
-            ["write_priv_key", actions.keys.write_priv_key],
-            ["write_pub_key", actions.keys.write_pub_key],
-            ["write_cert", actions.certs.write_cert],
-            ["gen_cert", actions.certs.gen_cert]
+            ["write_priv_key", actions.keys.write_priv_key, "pvkey"],
+            ["write_pub_key", actions.keys.write_pub_key, "pbkey"],
+            ["write_cert", actions.certs.write_cert, "cert"],
+            ["gen_cert", actions.certs.gen_cert, "cert"],
+            ["sign_cert", actions.certs.sign_cert, "csr"],
+            ["acknowledge", actions.requestor.acknowledge, "ack"]
         ]
         for action in actions_list:
-            await self.build_action({"act_name": action[0], "act_func": action[1]})
+            await self.build_action({"act_name": action[0], "act_func": action[1], "act_alias": action[2]})
         
         await self.actions["gen_cert"](self.cert_data)
     
