@@ -1,8 +1,9 @@
 from cryptography.hazmat.primitives import serialization, hashes
 from os import path
 from asyncio import iscoroutinefunction
+from re import search as regx_search
 
-async def assert_func_call(func, data):
+async def assert_func_call(func, *data):
     """Assert a function  call, and handle it whether coroutine or not.
 
     This function assumes that a function is given, and will attempt to
@@ -18,25 +19,29 @@ async def assert_func_call(func, data):
     Raises:
         AssertionError: If the function is not a function.
     """
-    if(not callable(func)):
-        raise AssertionError("Attempt was made to call a non-function.")
-    if(iscoroutinefunction(func)):
-        return await func(data)
+    if(func):
+        if(not callable(func)):
+            raise AssertionError("Function treatment on non-function type.")
+        if(iscoroutinefunction(func)):
+            return await func(*data)
+        else:
+            return func(*data)
     else:
-        return func(data)
+        return data
 
 async def assert_referable(referable, ref_key, cause):
     """Assert a referable key, and generate it if it doesn't exist.
     
-    This function assumes that a key exists in a dictionary, and if it doesn't, it will generate it.
+    This function assumes that a key exists in a dictionary, and if it doesn't,
+    it will generate it.
     
     Args:
         referable (dict): The dictionary to check.
         ref_key (str): The key to check.
-        cause (dict): The cause of the key not existing. This is
-            a dictionary with two keys: "function" and "data".
-            "function" is the function to call to generate the key
-            and "data" is the data to pass to the function.
+        cause (dict): The cause that will create the key if it doesn't exist. It
+            should have the following keys:
+                function: The function to call to generate the key.
+                data: The data to pass to the function.
     
     Returns:
         referable: The original dictionary, with the key asserted.
@@ -59,4 +64,5 @@ async def assert_referable(referable, ref_key, cause):
                     "".join(assert_err_str)
                 )
     referable[ref_key] = await assert_func_call(cause["function"], cause["data"])
+
     return referable
