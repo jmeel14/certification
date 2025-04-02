@@ -1,0 +1,45 @@
+Welcome to the Certification Authority setup wizard.
+
+This wizard will guide you through the process of setting up the
+Certification Authority, which is used to sign certificates for
+any secure web server. It will ask you a series of questions to
+build your CA.+
+
+This stage will ask you 2 questions about how you will host your CA:
+your CA IP address, and your CA port.+
+
+Please enter what address the CA will listen to for certificate
+requests. It should look like this *.*.*.*.
+Host IP received.+
+
+Please enter the port that you would like to bind the server to. It
+can be any number that is usable on your server machine, from
+1 to 65535.
+Host port received.+
+
+This stage of the wizard will ask questions that you must enter
+knowing that these details will be used as your Certificate
+Authority's (CA) details on any certificates that it will issue.
+The questions that you will be asked will be:
+CA common name, CA organization name, and CA organization unit name+
+
+Please enter the common name of the CA's organization. I don't know
+what this means, but just put in the organization name or its
+organization website.
+CA CN received.+
+
+Please enter the CA organization's name. This will be how your CA
+will be recognized by other humans (and computers, if they're
+picky).
+CA ON received.+
+
+Please enter the CA organization's unit name. This can be whatever,
+really.
+CA OU received.+
+
+This final stage will set up your CA's credentials, which will enable it
+to sign certificates from your connected services. It will only ask you
+one question; your CA password.+
+
+Please enter your CA password now.
+CA PK Password received.+
