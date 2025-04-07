@@ -30,17 +30,18 @@ def ready_setup_lines():
         "host": {
             "init": "".join(pre_text[1]),
             "addr": target_setup_question(pre_text, 2),
-            "port": target_setup_question(pre_text, 3)
+            "port": target_setup_question(pre_text, 3),
+            "path": target_setup_question(pre_text, 4)
         },
         "org": {
-            "init": "".join(pre_text[4]),
-            "cname": target_setup_question(pre_text, 5),
-            "o_name": target_setup_question(pre_text, 6),
-            "ou_name": target_setup_question(pre_text, 7)
+            "init": "".join(pre_text[5]),
+            "cname": target_setup_question(pre_text, 6),
+            "o_name": target_setup_question(pre_text, 7),
+            "ou_name": target_setup_question(pre_text, 8)
         },
         "pass": {
-            "init": "".join(pre_text[8]),
-            "passcode": target_setup_question(pre_text, 9)
+            "init": "".join(pre_text[9]),
+            "passcode": target_setup_question(pre_text, 10)
         }
     }
 def acquire_setup_answer(category, ref):
@@ -84,7 +85,8 @@ async def setup(cert_data, actions_list, answers_list):
 
         cert_data["host"] = {
             "addr": acquire_setup_answer("host", "addr"),
-            "port": int(acquire_setup_answer("host", "port"))
+            "port": int(acquire_setup_answer("host", "port")),
+            "path": acquire_setup_answer("host", "path")
         }
         cert_data["cert_metadata"] = {
             "auth": {

@@ -5,8 +5,9 @@ Certification Authority, which is used to sign certificates for
 any secure web server. It will ask you a series of questions to
 build your CA.+
 
-This stage will ask you 2 questions about how you will host your CA:
-your CA IP address, and your CA port.+
+This stage will ask you 3 questions about how you will host your CA:
+your CA IP address, your CA port, and your CA's directory for where
+your newly created certificates should go.+
 
 Please enter what address the CA will listen to for certificate
 requests. It should look like this *.*.*.*.
@@ -16,6 +17,10 @@ Please enter the port that you would like to bind the server to. It
 can be any number that is usable on your server machine, from
 1 to 65535.
 Host port received.+
+
+Please enter the directory for where your certificates should go. It
+should look like (D)RIVE:/path/to/directory.
+Host path received.+
 
 This stage of the wizard will ask questions that you must enter
 knowing that these details will be used as your Certificate

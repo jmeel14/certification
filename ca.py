@@ -6,36 +6,6 @@ import notice
 from . import actions
 from . import setup
 
-TEST_RESP = b"""
-HTTP/1.1 200 OK
-Content-Type: text/html
-
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Sample page</title>
-        <script>
-            setTimeout(()=>{
-                document.querySelector("button").addEventListener("mousedown", ()=>{
-                    console.log("Issuing communication attempt with server...");
-                    let instXHR = new XMLHttpRequest();
-                    instXHR.open('POST', './', true);
-                    instXHR.setRequestHeader('Content-Type', 'text/json');
-                    instXHR.send(new Blob(['idk_what_this_is'], {'msg': "Nooooootiiicccce meeeeeeeeeee"}), (res)=>{
-                        console.log("Server responded with:");
-                        console.log(res);
-                    });
-                });
-            }, 50)
-        </script>
-    </head>
-    <body>
-        <textarea placeholder="Insert things to say here"></textarea>
-        <button>Click me!</button>
-    </body>
-</html>
-"""
-
 class CACertGenerator:
     def __init__(self):
         self.cert_data = dict()
@@ -45,12 +15,7 @@ class CACertGenerator:
         self.alive = False
         self.actions = dict()
         self.answers = dict()
-    
-    def set_ready(self, predefs=None):
-        self.run_loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(self.run_loop)
-        self.run_loop.run_until_complete(self.live(predefs))
-    
+
     async def live(self, predefs=None):
         """Server initialization function."""
         
@@ -60,7 +25,7 @@ class CACertGenerator:
                 "host": {
                     "addr": predefs["host"]["addr"],
                     "port": predefs["host"]["port"],
-                    "public_html": predefs["host"]["public_html"]
+                    "path": predefs["host"]["path"]
                 },
                 "cert_metadata": {
                     "auth": {
@@ -88,7 +53,7 @@ class CACertGenerator:
         while self.alive:
             raw_req = self.server.accept()
             await actions.requestor.process_request(raw_req, self.answer)
-            raw_req[0].send(TEST_RESP)
+            raw_req[0].send(b"Server acknowledges you")
             # Requestor's process_request should convert the request into the following format:
             # { "req_name": <str>, "req_conn": <socket.socket>, "req_data": <dict> }
     
