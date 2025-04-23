@@ -1,15 +1,15 @@
-from . import commons
-from . import keys
-
 from cryptography.x509 import CertificateBuilder
 from cryptography.x509 import Name as x509Name
 from cryptography.x509 import NameAttribute as x509NameAttr
 from cryptography.x509.oid import NameOID
 from cryptography.x509 import BasicConstraints
 from cryptography.x509 import Certificate
-from cryptography.hazmat.backends import default_backend
 import uuid
 import datetime
+
+import commons
+import commons_credents
+import keys
 
 async def write_cert(cert_data):
     """Write a certificate to a file.
@@ -33,9 +33,7 @@ async def write_cert(cert_data):
     Raises:
         AssertionError: If the data received is not in the required format.
     """
-    cert_container = await commons.assert_referable(cert_data, "cert_metadata", {
-        "function": None, "data": None
-    })
+    cert_container = commons.assert_referable(cert_data, "cert_metadata", None, None)
     cert_metadata = cert_container["cert_metadata"]
     cert_prototype = CertificateBuilder(
         subject_name=x509Name([
@@ -57,8 +55,8 @@ async def write_cert(cert_data):
 
     cert_res = cert_prototype.sign(
         private_key = cert_data["key_data"]["priv_key"]["key_code"],
-        algorithm = commons.hashes.SHA256(),
-        backend = default_backend()
+        algorithm = commons_credents.hashes.SHA256,
+        backend = commons_credents.default_backend()
     )
     if(not isinstance(cert_res, Certificate)):
         raise TypeError("Certificate generation failed.")
@@ -81,7 +79,7 @@ async def gen_cert(cert_data):
     prep_filename = commons.path.normpath(cert_key_data["key_owner"] + "_cert.crt")
     with open(prep_filename, "wb") as cert_write_file:
         cert_write_file.write(cert_data["cert"].public_bytes(
-            encoding=commons.serialization.Encoding.PEM
+            encoding=commons_credents.serialization.Encoding.PEM
         ))
     return cert_data
 
