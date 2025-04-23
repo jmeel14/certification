@@ -23,35 +23,24 @@ async def assert_func_call(func, *data):
         raise AssertionError("Call attempted to non-callable " + str(func))
     return await func(*data) if iscoroutinefunction(func) else func(*data)
 
-async def assert_referable(referable, ref_key, cause):
-    """Assert a referable key, and generate it if it doesn't exist.
+def assert_referable(dict, ref, cause, *args):
+    """Assert a key exists in a dict, and if not, then try to cause it.
     
-    This function assumes that a key exists in a dictionary, and if it doesn't,
-    it will generate it.
-    
-    Args:
-        referable (dict): The dictionary to check.
-        ref_key (str): The key to check.
-        cause (dict): The cause that will create the key if it doesn't exist. It
-            should have the following keys:
-                function: The function to call to generate the key.
-                data: The data to pass to the function.
+    This will check for the existence of a key in the given dict, and if
+    it cannot find it, it will attempt to create a new key value, using
+    a given function with arguments. cause can be left blank to make a
+    literal assignment.
     
     Returns:
-        referable: The original dictionary, with the key asserted.
+        any: Value of the given key.
     
     Raises:
-        AssertionError: If the key doesn't exist, and the cause is
-            a dictionary but doesn't have "function", and no "data" either.
+        AssignFailure: If any error occurs with the given types for args dict,
+        ref, and cause, or if the given arg cause is malfunctioning.
     """
-    if not callable(cause["function"]) and not iscoroutinefunction(cause["function"]):
-        referable[ref_key] = cause["data"]
-        return referable
-    
-    try:
-        referable[ref_key] = await assert_func_call(cause['function'], *cause['data'])
-    except:
-        raise AssertionError(
-             "Unusual error occurred with manipulation of " + ref_key in str(referable)
-        )
-    return referable
+    if not ref in dict:
+        try:
+            dict[ref] = cause(*args)
+        except KeyError as AssignFailure:
+            raise AssignFailure
+    return dict[ref]
