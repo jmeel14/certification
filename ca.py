@@ -52,7 +52,7 @@ class CACertGenerator:
 
         while self.alive:
             raw_req = self.server.accept()
-            await actions.requestor.process_request(raw_req, self.answer)
+            await actions.requestor.process_request(self, raw_req, self.answer)
             raw_req[0].send(b"Server acknowledges you")
             # Requestor's process_request should convert the request into the following format:
             # { "req_name": <str>, "req_conn": <socket.socket>, "req_data": <dict> }
@@ -68,5 +68,7 @@ class CACertGenerator:
         """
         print(req)
         if(req["req_name"] in self.answers):
-            action_ref = self.actions[self.answers[req["req_name"]]]
-            await action_ref(req["req_conn"], req["req_data"])
+            await self.actions[self.answers[req["req_name"]]](
+                self, req["req_data"], self.log)
+    async def log(data):
+        print(data)
