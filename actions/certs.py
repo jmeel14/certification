@@ -7,9 +7,9 @@ from cryptography.x509 import Certificate
 import uuid
 import datetime
 
-import commons
-import commons_credents
-import keys
+from . import commons
+from . import commons_credents
+from . import keys
 
 async def write_cert(cert_data):
     """Write a certificate to a file.
