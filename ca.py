@@ -66,11 +66,8 @@ class CACertGenerator:
         them without blocking.
 
         """
-        print(req)
-        """req_clean = await actions.commons.assert_referable(
-            req, "req_name", { "function": None, "data": None }
-        )
+        req_data = req[0].recv(2048)
+        print(req_data)
         if(req_clean["req_name"] in self.answers):
             action_ref = self.actions[self.answers[req["req_name"]]]
-            await action_ref(req["req_conn"], req["req_data"])"
-        """
+            await action_ref(req["req_conn"], req["req_data"])

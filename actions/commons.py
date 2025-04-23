@@ -1,9 +1,8 @@
-from cryptography.hazmat.primitives import serialization, hashes
-from os import path
 from asyncio import iscoroutinefunction
-from re import search as regx_search
+from os import path
+from collections.abc import Callable
 
-async def assert_func_call(func, *data):
+async def assert_func_call(func:Callable, *data):
     """Assert a function  call, and handle it whether coroutine or not.
 
     This function assumes that a function is given, and will attempt to
@@ -23,7 +22,7 @@ async def assert_func_call(func, *data):
         raise AssertionError("Call attempted to non-callable " + str(func))
     return await func(*data) if iscoroutinefunction(func) else func(*data)
 
-def assert_referable(dict, ref, cause, *args):
+def assert_referable(dict:dict, ref, cause:Callable, *args):
     """Assert a key exists in a dict, and if not, then try to cause it.
     
     This will check for the existence of a key in the given dict, and if
