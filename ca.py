@@ -52,7 +52,7 @@ class CACertGenerator:
 
         while self.alive:
             raw_req = self.server.accept()
-            await actions.requestor.process_request(self, raw_req, self.answer)
+            await actions.requestor.process_request(raw_req, self.answer)
             raw_req[0].send(b"Server acknowledges you")
             # Requestor's process_request should convert the request into the following format:
             # { "req_name": <str>, "req_conn": <socket.socket>, "req_data": <dict> }
@@ -66,9 +66,11 @@ class CACertGenerator:
         them without blocking.
 
         """
-        print(req)
+        notice.gen_ntc('info', 'mini', str(req))
         if(req["req_name"] in self.answers):
             await self.actions[self.answers[req["req_name"]]](
-                self, req["req_data"], self.log)
-    async def log(data):
+                req, self.log
+            )
+            return True
+    async def log(self, data):
         print(data)
