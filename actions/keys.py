@@ -27,7 +27,7 @@ async def write_priv_key(key_data):
     )
     if(not isinstance(inst_key, commons_credents.rsa.RSAPrivateKey)):
         raise AssertionError("Key generation failed.")
-    prep_filename = commons.path.normpath(key_data["key_owner"] + "_priv.key")
+    prep_filename = commons.join_path(key_data["key_owner"], "_priv.key")
     with open(prep_filename, "wb") as key_write_file:
         key_write_file.write(inst_key.private_bytes(
             encoding=commons_credents.serialization.Encoding.PEM,
@@ -61,7 +61,7 @@ async def write_pub_key(key_data):
     inst_key_pub = inst_key["priv_key"]["key_code"].public_key()
     if(not isinstance(inst_key_pub, commons_credents.rsa.RSAPublicKey)):
         raise AssertionError("Public key generation failed.")
-    prep_filename = commons.path.normpath(key_data["key_owner"] + "_pub.key")
+    prep_filename = commons.join_path(key_data["key_owner"] + "_pub.key")
     with open(prep_filename, "wb") as key_write_file:
         key_write_file.write(inst_key.public_bytes(
             encoding=commons_credents.serialization.Encoding.PEM,

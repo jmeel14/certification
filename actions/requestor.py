@@ -29,7 +29,6 @@ async def process_request(requestor, processor_func):
 async def acknowledge(req, processor_func):
     print("Server received a connection!")
     req["req_conn"].send(json.dumps({"message": "ack"}).encode())
-    print(req)
     await processor_func(req)
 
 async def goodbye(req, processor_func):

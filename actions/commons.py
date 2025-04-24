@@ -1,7 +1,25 @@
 from asyncio import iscoroutinefunction
-from os import path
+from os.path import join as join_path
+import json
 from collections.abc import Callable
 import notice
+
+async def grab_data(data_path, data_file):
+    try:
+        data_file = open(join_path(data_path, "data", "auth", data_file), "r")
+        data_buff = data_file.read()
+        data_file.close()
+        return json.loads(data_buff)
+    except:
+        notice.gen_ntc(
+            'critical', 'title',
+            "".join([
+                "Critical failure in loading data file '",
+                data_file,
+                "'. Have the folders been organized as 'data/auth'?"
+            ])
+        )
+        raise FileNotFoundError
 
 async def assert_func_call(func:Callable, *data):
     """Assert a function  call, and handle it whether coroutine or not.

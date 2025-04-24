@@ -35,6 +35,11 @@ class CACertGenerator:
                     }
                 }
             }
+        else:
+            self.cert_data = await actions.commons.grab_data(
+                input("Specify path for data storage: "), "defs_ca.json"
+            )
+            self.cert_data["is_set"] = True
         await setup.setup(self.cert_data, self.actions, self.answers)
 
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

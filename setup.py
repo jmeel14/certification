@@ -1,11 +1,12 @@
 from . import actions
+from os.path import dirname
 
 import notice
 
 SETUP_TXT = {}
 
 def search_setup_lines():
-    file_ref = actions.commons.path.dirname(__file__) + actions.commons.path.sep + "setup_lines.txt"
+    file_ref = actions.commons.join_path(dirname(__file__), "setup_lines.txt")
     with open(file_ref, "r") as text_file:
         setup_text_raw = text_file.readlines()
         setup_text = []

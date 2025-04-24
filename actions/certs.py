@@ -76,7 +76,7 @@ async def gen_cert(cert_data):
     await commons.assert_referable(cert_data, "cert", {
         "function": write_cert, "data": cert_key_container
     })
-    prep_filename = commons.path.normpath(cert_key_data["key_owner"] + "_cert.crt")
+    prep_filename = commons.join_path(cert_key_data["key_owner"], "_cert.crt")
     with open(prep_filename, "wb") as cert_write_file:
         cert_write_file.write(cert_data["cert"].public_bytes(
             encoding=commons_credents.serialization.Encoding.PEM
