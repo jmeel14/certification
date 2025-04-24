@@ -1,6 +1,7 @@
 from asyncio import iscoroutinefunction
 from os import path
 from collections.abc import Callable
+import notice
 
 async def assert_func_call(func:Callable, *data):
     """Assert a function  call, and handle it whether coroutine or not.
@@ -19,10 +20,11 @@ async def assert_func_call(func:Callable, *data):
         AssertionError: If field 'function' is not a function.
     """
     if not callable(func) and not iscoroutinefunction(func):
-        raise AssertionError("Call attempted to non-callable " + str(func))
+        notice.gen_ntc('critical', 'mini', "Call attempted to non-callable " + str(func))
+        return None
     return await func(*data) if iscoroutinefunction(func) else func(*data)
 
-def assert_referable(dict:dict, ref, cause:Callable, *args):
+def assert_referable(src:dict, ref, cause:Callable, *args):
     """Assert a key exists in a dict, and if not, then try to cause it.
     
     This will check for the existence of a key in the given dict, and if
@@ -34,12 +36,12 @@ def assert_referable(dict:dict, ref, cause:Callable, *args):
         any: Value of the given key.
     
     Raises:
-        AssignFailure: If any error occurs with the given types for args dict,
+        AssignFailure: If any error occurs with the given types for args src,
         ref, and cause, or if the given arg cause is malfunctioning.
     """
-    if not ref in dict:
+    if not ref in src:
         try:
-            dict[ref] = cause(*args)
+            src[ref] = cause(*args)
         except KeyError as AssignFailure:
             raise AssignFailure
-    return dict[ref]
+    return src[ref]
