@@ -71,8 +71,6 @@ async def build_action(actions_list, answers_list, act_name, act_func, act_alias
     actions.commons.assert_referable(answers_list, act_alias, lambda any: any, act_name)
 
     notice.gen_ntc("success", "title", """Action {0} has been built, with alias {1}.""".format(act_name, act_alias))
-    print(actions_list)
-    print(answers_list)
 
 async def setup(cert_data, actions_list, answers_list):
     """Server setup function."""
