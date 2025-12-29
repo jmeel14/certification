@@ -1,3 +1,6 @@
+# Project Abandoned
+Due to the complexity of security requirements, coupled with the fact that certificate generators already exist, this project has henceforth been abandoned.
+
 # A simple Python certificate authority server
 
 This is a program that runs a server to authorize certificate signing requests
